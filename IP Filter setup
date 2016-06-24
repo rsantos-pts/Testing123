@@ -1,0 +1,35 @@
+An Explanation of the TEAMS IP Filter
+
+The "remote_ip_access_filter" RFS_SYSTEM_PARAMETER is a boolean that determines if the LEA uses IP filtering at all.  If this value is set to false, other IP filtering features will not take effect.  If the value is set to true, the IP address of each user accessing TEAMS is validated if it passes one of the following tests:
+
+The user's IP is within one of the classic internal ranges: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16
+The user's IP is within one of the ranges defined in the RFS_CFG_FILTER_RANGE table
+These will typically be the LEA's internal IP ranges, or external ranges if TEAMS is hosted at the Prologic data center
+The user is in a PCN for which POS_INV_WORK_REMOTE_FLG is set to "Y"
+
+If the IP is not validated according to these tests, the user is not allowed to log in.  The IP that TEAMS receives may not be the same IP as reported by the user's local system; for example, there might be an intervening proxy or NAT.  The IP address filtering does not affect directly-accessed "external" features of TEAMS such as application submission or the parent portal - it only affects the primary sign in page (i.e. the "common" module).  
+Queries
+Use the following query to determine if IP filtering is enabled:
+
+SELECT RFS_SYSTEM_PARAM_VALUE
+FROM RFS_SYSTEM_PARAMETER 
+WHERE RFS_SYSTEM_PARAM_NAME = 'remote_ip_access_filter'
+
+Use the following query to list the custom allowed IP ranges (i.e. test 2):
+
+SELECT * FROM RFS_CFG_FILTER_RANGE
+
+Use the following query to determine if the remote flag of a given user is set  (i.e. test 3):
+
+SELECT DISTINCT
+        PERSON.PER_ID,
+        PERSON.USER_LOGIN_ID,
+        PERSON.PER_FIRST_NAME,
+        PERSON.PER_LAST_NAME,
+        POSITION_INVENTORY.POS_INV_WORK_REMOTE_FLG
+FROM PERSON
+INNER JOIN EMPLOYEE_ASSIGNMENT
+ON EMPLOYEE_ASSIGNMENT.PER_ID = PERSON.PER_ID
+INNER JOIN POSITION_INVENTORY
+ON POSITION_INVENTORY.POS_CONTROL_NUM = EMPLOYEE_ASSIGNMENT.POS_CONTROL_NUM
+WHERE POS_INV_WORK_REMOTE_FLG = 'Y'
