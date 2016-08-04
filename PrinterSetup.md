@@ -1,4 +1,4 @@
-To set up a new IP address for printer on the Nowdocs server. (RDP to server)
+To set up a new IP address for a printer on the Nowdocs server. (RDP to server)
 
 If replacing an existing printer be sure to right click on old printer, select printer properties, click on Sharing tab change existing Share name
 Or you can delete the Old printer (just make a note of Printer make & model if replacing IP)
