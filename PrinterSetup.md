@@ -53,8 +53,8 @@ Next select the Name of the printer that you would like to change, and only chan
 
 Example:
 
-_Old Value: \\qa-cli-nowdocs\ **_W2Printer_**_
-_New Value: \\qa-cli-nowdocs\ **_New W2Printer_**_
+_Old Value: \\qa-cli-nowdocs\ **W2Printer**_
+New Value: \\qa-cli-nowdocs\ **New W2Printer**_
 
 Click _Ok_
 
